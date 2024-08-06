@@ -15,8 +15,9 @@ class VideoStream:
         while True:
             ret, frame = self.camera.read()
             if ret:
-                frame = self.drowsiness_detection_system.frame_processing(frame)
+                frame, sketch = self.drowsiness_detection_system.frame_processing(frame)
                 cv2.imshow('Emotion Recognition', frame)
+                cv2.imshow('3D sketch image', sketch)
                 t = cv2.waitKey(5)
                 if t == 27:
                     break
