@@ -67,7 +67,7 @@ class FaceMeshExtractor:
             }
         }
         self.extract_feature_points(face_points, feature_indices)
-        return self.points['mouth']
+        return self.points['pitch']
 
 
 class FaceMeshDrawer:
@@ -80,6 +80,17 @@ class FaceMeshDrawer:
             self.mp_draw.draw_landmarks(face_image, face_mesh, mp.solutions.face_mesh.FACEMESH_TESSELATION,
                                         self.config_draw, self.config_draw)
 
+    def draw_sketch(self, face_image: np.ndarray, face_mesh_info: Any):
+        h, w, _ = face_image.shape
+        black_image = np.zeros((h, w, 3), dtype=np.uint8)
+        for face_mesh in face_mesh_info.multi_face_landmarks:
+            for pt in face_mesh.landmark:
+                x = int(pt.x * w)
+                y = int(pt.y * h)
+                z = int(pt.z * 50)
+                cv2.circle(black_image, (x, y), 1, (255 - z, 255 - z, 0 - z), -1)
+        return black_image
+
 
 class FaceMeshProcessor:
     def __init__(self):
@@ -88,10 +99,11 @@ class FaceMeshProcessor:
         self.drawer = FaceMeshDrawer()
 
     def process(self, face_image: np.ndarray, draw: bool = True) -> Tuple[dict, bool, np.ndarray]:
-        original_image = face_image.copy()
+        h, w, _ = face_image.shape
+        sketch = np.zeros((h, w, 3), dtype=np.uint8)
         success, face_mesh_info = self.inference.process(face_image)
         if not success:
-            return {}, success, original_image
+            return {}, success, sketch
 
         face_points = self.extractor.extract_points(face_image, face_mesh_info)
         points = {
@@ -101,7 +113,7 @@ class FaceMeshProcessor:
         }
 
         if draw:
-            self.drawer.draw(face_image, face_mesh_info)
-            return points, success, face_image
+            sketch = self.drawer.draw_sketch(face_image, face_mesh_info)
+            return points, success, sketch
 
-        return points, success, original_image
+        return points, success, sketch

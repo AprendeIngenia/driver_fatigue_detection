@@ -1,5 +1,5 @@
 import numpy as np
-from drowsiness_processor.extract_points.main_point_extractor import PointExtractor
+from drowsiness_processor.extract_points.point_extractor import PointExtractor
 
 
 class DrowsinessDetectionSystem:
@@ -7,5 +7,5 @@ class DrowsinessDetectionSystem:
         self.point_extractor = PointExtractor()
 
     def frame_processing(self, face_image: np.ndarray):
-        face_points, control_process, original_image = self.point_extractor.process(face_image)
-        return original_image
+        key_points, control_process, sketch_image = self.point_extractor.process(face_image)
+        return face_image, sketch_image

@@ -59,10 +59,12 @@ class HandsDrawer:
         self.mp_draw = mp.solutions.drawing_utils
         self.config_draw = self.mp_draw.DrawingSpec(color=color, thickness=1, circle_radius=1)
 
-    def draw(self, face_image: np.ndarray, hands_info: Any):
+    def draw(self, sketch_image: np.ndarray, hands_info: Any):
         for hands in hands_info.multi_hand_landmarks:
-            self.mp_draw.draw_landmarks(face_image, hands, mp.solutions.hands.HAND_CONNECTIONS,
+            self.mp_draw.draw_landmarks(sketch_image, hands, mp.solutions.hands.HAND_CONNECTIONS,
                                         self.config_draw, self.config_draw)
+
+        return sketch_image
 
 
 class HandsProcessor:
@@ -75,10 +77,10 @@ class HandsProcessor:
             'second_hand': {'distances': []},
         }
 
-    def process(self, hand_image: np.ndarray, draw: bool = False):
+    def process(self, hand_image: np.ndarray, sketch_image: np.ndarray, draw: bool = False) -> Tuple[dict, bool, np.ndarray]:
         success, hands_info = self.inference.process(hand_image)
         if not success:
-            return self.points, success, hand_image
+            return self.points, success, sketch_image
 
         num_hands = self.extractor.count_hands(hands_info)
         if num_hands >= 2:
@@ -95,6 +97,6 @@ class HandsProcessor:
             }
 
         if draw:
-            self.drawer.draw(hand_image, hands_info)
-            return points, success, hand_image
-        return points, success, hand_image
+            sketch_image = self.drawer.draw(sketch_image, hands_info)
+            return points, success, sketch_image
+        return points, success, sketch_image
