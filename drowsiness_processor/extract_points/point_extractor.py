@@ -9,7 +9,7 @@ log.basicConfig(level=log.INFO)
 logger = log.getLogger(__name__)
 
 
-class PointExtractor:
+class PointsExtractor:
     def __init__(self):
         self.face_mesh = FaceMeshProcessor()
         self.hands = HandsProcessor()

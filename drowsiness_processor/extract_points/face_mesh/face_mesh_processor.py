@@ -25,7 +25,7 @@ class FaceMeshExtractor:
         self.points: dict = {
             'eyes': {'distances': []},
             'mouth': {'distances': []},
-            'pitch': {'distances': []},
+            'head': {'distances': []},
         }
 
     def extract_points(self, face_image: np.ndarray, face_mesh_info: Any) -> List[List[int]]:
@@ -45,7 +45,7 @@ class FaceMeshExtractor:
     def get_eyes_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'eyes': {
-                'distances': [159, 145, 385, 374, 145, 230, 374, 450],
+                'distances': [159, 145, 385, 374, 145, 230, 374, 450, 468, 473],
             }
         }
         self.extract_feature_points(face_points, feature_indices)
@@ -60,14 +60,14 @@ class FaceMeshExtractor:
         self.extract_feature_points(face_points, feature_indices)
         return self.points['mouth']
 
-    def get_pitch_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
+    def get_head_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
-            'pitch': {
+            'head': {
                 'distances': [1, 0, 9, 51]
             }
         }
         self.extract_feature_points(face_points, feature_indices)
-        return self.points['pitch']
+        return self.points['head']
 
 
 class FaceMeshDrawer:
@@ -109,7 +109,7 @@ class FaceMeshProcessor:
         points = {
             'eyes': self.extractor.get_eyes_points(face_points),
             'mouth': self.extractor.get_mouth_points(face_points),
-            'pitch': self.extractor.get_pitch_points(face_points),
+            'head': self.extractor.get_head_points(face_points),
         }
 
         if draw:
