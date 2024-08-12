@@ -11,8 +11,6 @@ class PointsProcessing:
     def __init__(self):
         self.face_processors: dict[str, FaceProcessor] = {
             'eyes': EyesProcessor(),
-            'first hand': FirstHandProcessor(),
-            'second hand': SecondHandProcessor(),
             'head': HeadProcessor(),
             'mouth': MouthProcessor()
         }
