@@ -63,7 +63,7 @@ class FaceMeshExtractor:
     def get_head_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'head': {
-                'distances': [1, 0, 9, 51]
+                'distances': [1, 0, 1, 5, 4, 205, 425]
             }
         }
         self.extract_feature_points(face_points, feature_indices)

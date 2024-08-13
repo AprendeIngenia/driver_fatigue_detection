@@ -49,7 +49,7 @@ class YawnCounter:
 
     def increment(self, duration):
         self.yawn_count += 1
-        self.yawn_durations.append(f"{self.yawn_count} micro sleep: {duration} seconds")
+        self.yawn_durations.append(f"{self.yawn_count} yawn: {duration} seconds")
 
     def reset(self):
         self.yawn_count = 0
