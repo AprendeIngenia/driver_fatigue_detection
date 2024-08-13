@@ -26,7 +26,10 @@ class HeadPointsProcessing:
         return nose_mouth, head_front
 
     def main(self, head_points: dict):
-        nose_mouth_distance, head_front_distance = self.calculate_distances(head_points)
+        nose_mouth_distance, nose_head_distance = self.calculate_distances(head_points)
         self.head['nose_mouth_distance'] = nose_mouth_distance
-        self.head['head_front_distance'] = head_front_distance
+        self.head['nose_head_distance'] = nose_head_distance
+        self.head['nose_point'] = head_points['distances'][4]
+        self.head['right_cheek_point'] = head_points['distances'][5]
+        self.head['left_cheek_point'] = head_points['distances'][6]
         return self.head

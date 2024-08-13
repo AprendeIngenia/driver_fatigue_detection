@@ -26,7 +26,7 @@ class FeaturesDrowsinessProcessing:
         #if 'second_hand' in distances:
         #    self.processed_feature['eye rub'] = (self.features_drowsiness['eye rub'].process(distances['second_hand']))
 
-        #self.processed_feature['pitch'] = self.features_drowsiness['pitch'].process(distances.get('head', {}))
+        self.processed_feature['pitch'] = self.features_drowsiness['pitch'].process(distances.get('head', {}))
         self.processed_feature['yawn'] = self.features_drowsiness['yawn'].process(distances.get('mouth', {}))
         print(self.processed_feature)
 
