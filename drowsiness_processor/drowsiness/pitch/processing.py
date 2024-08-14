@@ -1,5 +1,5 @@
 import time
-from typing import Tuple
+from typing import Tuple, Dict, Any
 from abc import ABC, abstractmethod
 from drowsiness_processor.drowsiness.processor import DrowsinessProcessor
 
@@ -44,7 +44,7 @@ class PitchDetection(Detector):
             self.end_time = time.time()
             pitch_duration = round(self.end_time - self.start_time, 0)
             self.flag = False
-            if pitch_duration > 2:
+            if pitch_duration >= 3.0:
                 self.start_time = 0
                 self.end_time = 0
                 return True, pitch_duration
@@ -67,10 +67,32 @@ class PitchCounter:
         return self.pitch_durations
 
 
+class ReportGenerator(ABC):
+    @abstractmethod
+    def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        raise NotImplemented
+
+
+class PitchReportGenerator(ReportGenerator):
+    def generate_report(self, data: Dict[str, Any]) -> dict[str, Any]:
+        pitch_count = data.get("pitch_count", 0)
+        pitch_durations = data.get("pitch_durations", [])
+        head_down = data.get("head_down", False)
+        pitch_report = data.get("pitch_report", False)
+
+        return {
+            'pitch_count': pitch_count,
+            'pitch_durations': pitch_durations,
+            'head_down': head_down,
+            'pitch_report': pitch_report
+        }
+
+
 class PitchEstimator(DrowsinessProcessor):
     def __init__(self):
         self.pitch_detection = PitchDetection()
         self.pitch_counter = PitchCounter()
+        self.pitch_report_generator = PitchReportGenerator()
 
     def process(self, head_points: dict):
         head_down, head_position = self.pitch_detection.check_head_down(head_points)
@@ -78,17 +100,11 @@ class PitchEstimator(DrowsinessProcessor):
         if is_pitch:
             self.pitch_counter.increment(duration_pitch)
 
-        pitch_count = self.pitch_counter.pitch_count
-
-        if pitch_count > 0:
-            return {
-                'pitch counter: ': pitch_count,
-                'pitch durations: ': self.pitch_counter.get_durations(),
-                'pitch report: ': True
-            }
-
-        return {
-            'pitch counter: ': None,
-            'pitch durations: ': self.pitch_counter.get_durations(),
-            'pitch report: ': False
+        pitch_data = {
+            "pitch_count": self.pitch_counter.pitch_count,
+            "pitch_durations": self.pitch_counter.get_durations(),
+            "head_down": head_down,
+            "pitch_report": self.pitch_counter.pitch_count > 0
         }
+
+        return self.pitch_report_generator.generate_report(pitch_data)
