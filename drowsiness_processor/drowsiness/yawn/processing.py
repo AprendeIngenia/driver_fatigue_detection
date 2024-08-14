@@ -1,5 +1,5 @@
 import time
-from typing import Tuple
+from typing import Tuple, Dict, Any
 from abc import ABC, abstractmethod
 from drowsiness_processor.drowsiness.processor import DrowsinessProcessor
 
@@ -58,11 +58,33 @@ class YawnCounter:
         return self.yawn_durations
 
 
+class ReportGenerator(ABC):
+    @abstractmethod
+    def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        raise NotImplemented
+
+
+class YawnReportGenerator(ReportGenerator):
+    def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        yawn_count = data.get("yawn_count", 0)
+        yawn_durations = data.get("yawn_durations", [])
+        elapsed_time = data.get("elapsed_time", 0)
+        yawn_report = data.get("yawn_report", False)
+
+        return {
+            'yawn_count_per_3_minutes': yawn_count,
+            'yawn_durations': yawn_durations,
+            'report_message': f'Counting yawns... {180 - elapsed_time} seconds remaining.',
+            'yawn_report': yawn_report
+        }
+
+
 class YawnEstimator(DrowsinessProcessor):
     def __init__(self):
         self.yawn_detection = YawnDetection()
         self.yawn_counter = YawnCounter()
         self.start_report = time.time()
+        self.yawn_report_generator = YawnReportGenerator()
 
     def process(self, mouth_points: dict):
         current_time = time.time()
@@ -74,16 +96,17 @@ class YawnEstimator(DrowsinessProcessor):
             self.yawn_counter.increment(duration_yawn)
 
         if elapsed_time >= 180:
-            yawn_count = self.yawn_counter.yawn_count
+            yawn_data = {
+                "yawn_count": self.yawn_counter.yawn_count,
+                "yawn_durations": self.yawn_counter.get_durations(),
+                "elapsed_time": elapsed_time,
+                "yawn_report": True
+            }
             self.yawn_counter.reset()
             self.start_report = current_time
-            return {
-                'yawn count per 3 minutes: ': yawn_count,
-                'micro sleep durations: ': self.yawn_counter.get_durations(),
-                'flicker report: ': True
-            }
+            return self.yawn_report_generator.generate_report(yawn_data)
 
         return {
-            'flicker count per minute': f'In {elapsed_time} seconds we will have your yawn report, please wait.',
-            'flicker report: ': False
+            'yawn_count_per_3_minutes': f'Counting yawns... {180 - elapsed_time} seconds remaining.',
+            'yawn_report': False
         }
