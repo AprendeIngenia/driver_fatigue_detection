@@ -1,7 +1,7 @@
 import time
 from typing import Tuple, Dict, Any
 from abc import ABC, abstractmethod
-from drowsiness_processor.drowsiness.processor import DrowsinessProcessor
+from drowsiness_processor.drowsiness_features.processor import DrowsinessProcessor
 
 
 class Detector(ABC):
@@ -47,7 +47,7 @@ class YawnCounter:
         self.yawn_count: int = 0
         self.yawn_durations = []
 
-    def increment(self, duration):
+    def increment(self, duration: float):
         self.yawn_count += 1
         self.yawn_durations.append(f"{self.yawn_count} yawn: {duration} seconds")
 
@@ -83,8 +83,8 @@ class YawnEstimator(DrowsinessProcessor):
     def __init__(self):
         self.yawn_detection = YawnDetection()
         self.yawn_counter = YawnCounter()
-        self.start_report = time.time()
         self.yawn_report_generator = YawnReportGenerator()
+        self.start_report = time.time()
 
     def process(self, mouth_points: dict):
         current_time = time.time()

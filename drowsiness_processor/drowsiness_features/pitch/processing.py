@@ -1,7 +1,7 @@
 import time
 from typing import Tuple, Dict, Any
 from abc import ABC, abstractmethod
-from drowsiness_processor.drowsiness.processor import DrowsinessProcessor
+from drowsiness_processor.drowsiness_features.processor import DrowsinessProcessor
 
 
 class Detector(ABC):
@@ -56,7 +56,7 @@ class PitchCounter:
         self.pitch_count: int = 0
         self.pitch_durations = []
 
-    def increment(self, duration):
+    def increment(self, duration: float):
         self.pitch_count += 1
         self.pitch_durations.append(f"{self.pitch_count} pitch: {duration} seconds")
 

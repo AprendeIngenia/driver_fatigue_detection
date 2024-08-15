@@ -1,7 +1,7 @@
 import numpy as np
 from drowsiness_processor.extract_points.point_extractor import PointsExtractor
 from drowsiness_processor.data_processing.main import PointsProcessing
-from drowsiness_processor.drowsiness.processing import FeaturesDrowsinessProcessing
+from drowsiness_processor.drowsiness_features.processing import FeaturesDrowsinessProcessing
 
 
 class DrowsinessDetectionSystem:

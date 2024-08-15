@@ -29,7 +29,7 @@ class PointsExtractor:
                 #    "Face mesh: successful.\nHands detect: failed. \nExtract: blinks, microsleeps, yawning, nodding")
                 return face_points, True, draw_sketch
         else:
-            #logger.warning("Face mesh: failed, no drowsiness recognition.")
+            #logger.warning("Face mesh: failed, no drowsiness_features recognition.")
             return face_points, False, draw_sketch
 
     def merge_points(self, face_points: dict, hands_points: dict) -> dict:
