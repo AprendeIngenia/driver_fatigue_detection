@@ -1,7 +1,7 @@
 import time
 from typing import Tuple, Dict, Any
 from abc import ABC, abstractmethod
-from drowsiness_processor.drowsiness.processor import DrowsinessProcessor
+from drowsiness_processor.drowsiness_features.processor import DrowsinessProcessor
 
 
 class Detector(ABC):
@@ -78,7 +78,7 @@ class MicroSleepCounter:
         self.micro_sleep_count: int = 0
         self.micro_sleep_durations = []
 
-    def increment(self, duration):
+    def increment(self, duration: float):
         self.micro_sleep_count += 1
         self.micro_sleep_durations.append(f"{self.micro_sleep_count} micro sleep: {duration} seconds")
 
