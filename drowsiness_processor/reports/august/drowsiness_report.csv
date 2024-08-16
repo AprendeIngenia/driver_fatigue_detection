@@ -1,0 +1,3 @@
+timestamp,eye_rub_first_hand_report,eye_rub_first_hand_count,eye_rub_first_hand_durations,|,eye_rub_second_hand_report,eye_rub_second_hand_count,eye_rub_second_hand_durations,|,flicker_report,flicker_count,|,micro_sleep_report,micro_sleep_count,micro_sleep_durations,|,pitch_report,pitch_count,pitch_durations,|,yawn_report,yawn_count,yawn_durations
+2024-08-16 01:08:16,False,0,[],|,False,0,[],|,False,0,|,True,1,['1 micro sleep: 4.0 seconds'],|,False,Counting pitches...,[],|,False,Counting yawns... 4.0 seconds remaining.,[]
+2024-08-16 01:08:19,False,0,[],|,False,0,[],|,False,Counting flickers... 50.0 seconds remaining.,|,False,0,[],|,False,Counting pitches...,[],|,True,1,['1 yawn: 5.0 seconds']

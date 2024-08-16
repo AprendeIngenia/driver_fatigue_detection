@@ -100,11 +100,18 @@ class PitchEstimator(DrowsinessProcessor):
         if is_pitch:
             self.pitch_counter.increment(duration_pitch)
 
-        pitch_data = {
-            "pitch_count": self.pitch_counter.pitch_count,
-            "pitch_durations": self.pitch_counter.get_durations(),
-            "head_down": head_down,
-            "pitch_report": self.pitch_counter.pitch_count > 0
-        }
+        if is_pitch:
+            pitch_data = {
+                "pitch_count": self.pitch_counter.pitch_count,
+                "pitch_durations": self.pitch_counter.get_durations(),
+                "head_down": head_down,
+                "pitch_report": True
+            }
 
-        return self.pitch_report_generator.generate_report(pitch_data)
+            return self.pitch_report_generator.generate_report(pitch_data)
+
+        return {
+            'pitch_count': f'Counting pitches...',
+            'pitch_report': False,
+            'head_down': head_down
+        }

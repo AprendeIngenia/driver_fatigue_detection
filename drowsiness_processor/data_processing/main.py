@@ -15,8 +15,8 @@ class PointsProcessing:
             'mouth': MouthProcessor()
         }
         self.hands_processors: dict[str, HandsProcessor] = {
-            'first hand': FirstHandProcessor(),
-            'second hand': SecondHandProcessor(),
+            'first_hand': FirstHandProcessor(),
+            'second_hand': SecondHandProcessor(),
         }
         self.processed_points: dict = {}
 
@@ -25,11 +25,11 @@ class PointsProcessing:
         self.processed_points['eyes'] = self.face_processors['eyes'].process(points.get('eyes', {}))
 
         if 'first_hand' in points:
-            self.processed_points['first hand'] = (self.hands_processors['first hand'].process(points['first_hand'],
+            self.processed_points['first_hand'] = (self.hands_processors['first_hand'].process(points['first_hand'],
                                                                                                points.get('eyes', {})))
 
         if 'second_hand' in points:
-            self.processed_points['second hand'] = (self.hands_processors['second hand'].process(points['second_hand'],
+            self.processed_points['second_hand'] = (self.hands_processors['second_hand'].process(points['second_hand'],
                                                                                                  points.get('eyes',
                                                                                                             {})))
 

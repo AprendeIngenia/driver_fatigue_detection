@@ -31,11 +31,13 @@ class YawnDetection(Detector):
         if open_mouth and not self.flag:
             self.start_time = time.time()
             self.flag = True
+            print('init yawn')
         elif not open_mouth and self.flag:
             self.end_time = time.time()
             yawn_duration = round(self.end_time - self.start_time, 0)
+            print(f'finish yawn: {yawn_duration}')
             self.flag = False
-            if yawn_duration > 5:
+            if yawn_duration > 4:
                 self.start_time = 0
                 self.end_time = 0
                 return True, yawn_duration
@@ -72,7 +74,7 @@ class YawnReportGenerator(ReportGenerator):
         yawn_report = data.get("yawn_report", False)
 
         return {
-            'yawn_count_per_3_minutes': yawn_count,
+            'yawn_count': yawn_count,
             'yawn_durations': yawn_durations,
             'report_message': f'Counting yawns... {180 - elapsed_time} seconds remaining.',
             'yawn_report': yawn_report
@@ -95,6 +97,8 @@ class YawnEstimator(DrowsinessProcessor):
         if is_yawn:
             self.yawn_counter.increment(duration_yawn)
 
+        print(f'is yawn: {self.yawn_counter.yawn_count}')
+
         if elapsed_time >= 180:
             yawn_data = {
                 "yawn_count": self.yawn_counter.yawn_count,
@@ -107,6 +111,6 @@ class YawnEstimator(DrowsinessProcessor):
             return self.yawn_report_generator.generate_report(yawn_data)
 
         return {
-            'yawn_count_per_3_minutes': f'Counting yawns... {180 - elapsed_time} seconds remaining.',
+            'yawn_count': f'Counting yawns... {180 - elapsed_time} seconds remaining.',
             'yawn_report': False
         }
