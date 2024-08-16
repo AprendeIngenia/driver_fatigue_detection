@@ -82,6 +82,9 @@ class MicroSleepCounter:
         self.micro_sleep_count += 1
         self.micro_sleep_durations.append(f"{self.micro_sleep_count} micro sleep: {duration} seconds")
 
+    def reset(self):
+        self.micro_sleep_count = 0
+
     def get_durations(self):
         return self.micro_sleep_durations
 
@@ -97,11 +100,13 @@ class FlickerReportGenerator(ReportGenerator):
         flicker_count = data.get("flicker_count", 0)
         elapsed_time = data.get("elapsed_time", 0)
         flicker_report = data.get("flicker_report", False)
+        micro_sleep_report = data.get("micro_sleep_Report", False)
 
         return {
-            'flicker_count_per_minute': flicker_count,
+            'flicker_count': flicker_count,
             'report_message': f'Counting flickers... {60 - elapsed_time} seconds remaining.',
-            'flicker_report': flicker_report
+            'flicker_report': flicker_report,
+            'micro_sleep_report': micro_sleep_report
         }
 
 
@@ -110,11 +115,13 @@ class MicroSleepReportGenerator(ReportGenerator):
         micro_sleep_count = data.get("micro_sleep_count", 0)
         micro_sleep_durations = data.get("micro_sleep_durations", [])
         micro_sleep_report = data.get("micro_sleep_report", False)
+        flicker_report = data.get("flicker_report", False)
 
         return {
             'micro_sleep_count': micro_sleep_count,
             'micro_sleep_durations': micro_sleep_durations,
-            'micro_sleep_report': micro_sleep_report
+            'micro_sleep_report': micro_sleep_report,
+            'flicker_report': flicker_report
         }
 
 
@@ -147,22 +154,24 @@ class FlickerEstimator(DrowsinessProcessor):
             flicker_data = {
                 "flicker_count": self.flicker_counter.flicker_count,
                 "elapsed_time": elapsed_time,
-                "flicker_report": True
+                "flicker_report": True,
+                "micro_sleep_report": False,
             }
             self.flicker_counter.reset()
             self.start_report = current_time
             return self.flicker_report_generator.generate_report(flicker_data)
 
-        if self.micro_sleep_counter.micro_sleep_count > 0:
+        if is_micro_sleep:
             micro_sleep_data = {
                 "micro_sleep_count": self.micro_sleep_counter.micro_sleep_count,
                 "micro_sleep_durations": self.micro_sleep_counter.get_durations(),
-                "micro_sleep_report": True
+                "micro_sleep_report": True,
+                "flicker_report": False
             }
             return self.micro_sleep_report_generator.generate_report(micro_sleep_data)
 
         return {
-            'flicker_count_per_minute': f'Counting flickers... {60 - elapsed_time} seconds remaining.',
+            'flicker_count': f'Counting flickers... {60 - elapsed_time} seconds remaining.',
             'flicker_report': False,
             'micro_sleep_report': False
         }
