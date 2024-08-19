@@ -10,7 +10,9 @@ class DistanceCalculator(ABC):
 
 class EuclideanDistanceCalculator(DistanceCalculator):
     def calculate_distance(self, point1, point2):
-        return np.linalg.norm(np.array(point1) - np.array(point2))
+        point1 = point1[1]
+        point2 = point2[1]
+        return np.linalg.norm(point1 - point2)
 
 
 class EyesPointsProcessing:

@@ -55,7 +55,7 @@ class MicroSleepDetection(Detector):
             self.end_time = time.time()
             flicker_duration = round(self.end_time - self.start_time, 0)
             self.flag = False
-            if flicker_duration > 2:
+            if flicker_duration >= 2:
                 self.start_time = 0
                 self.end_time = 0
                 return True, flicker_duration

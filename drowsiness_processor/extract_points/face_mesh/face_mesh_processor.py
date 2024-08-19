@@ -45,7 +45,7 @@ class FaceMeshExtractor:
     def get_eyes_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'eyes': {
-                'distances': [159, 145, 385, 374, 145, 230, 374, 450, 468, 473],
+                'distances': [159, 145, 385, 374, 468, 472, 473, 477, 468, 473],
             }
         }
         self.extract_feature_points(face_points, feature_indices)
