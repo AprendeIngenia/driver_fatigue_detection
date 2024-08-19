@@ -31,7 +31,7 @@ class EyeRubDetection(Detector):
             self.end_time = time.time()
             eye_rub_duration = round(self.end_time - self.start_time, 0)
             self.flag = False
-            if eye_rub_duration > 2:
+            if eye_rub_duration > 1:
                 self.start_time = 0
                 self.end_time = 0
                 return True, eye_rub_duration

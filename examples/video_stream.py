@@ -30,6 +30,7 @@ class VideoStream:
 
 if __name__ == "__main__":
     camera = Camera(0, 1280, 720)
+    #camera = Camera("examples/video_example.mp4", 1280, 720)
     emotion_recognition_system = DrowsinessDetectionSystem()
     video_stream = VideoStream(camera, emotion_recognition_system)
     video_stream.run()
