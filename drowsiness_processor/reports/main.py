@@ -23,7 +23,6 @@ class DrowsinessReports:
             writer.writeheader()
 
     def main(self, report_data: dict):
-        #print(report_data['yawn'])
         if (report_data['eye_rub_first_hand']['eye_rub_report'] or
                 report_data['eye_rub_second_hand']['eye_rub_report'] or
                 report_data['flicker_and_micro_sleep']['flicker_report'] or
