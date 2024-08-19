@@ -31,11 +31,9 @@ class YawnDetection(Detector):
         if open_mouth and not self.flag:
             self.start_time = time.time()
             self.flag = True
-            print('init yawn')
         elif not open_mouth and self.flag:
             self.end_time = time.time()
             yawn_duration = round(self.end_time - self.start_time, 0)
-            print(f'finish yawn: {yawn_duration}')
             self.flag = False
             if yawn_duration > 4:
                 self.start_time = 0
@@ -96,8 +94,6 @@ class YawnEstimator(DrowsinessProcessor):
         is_yawn, duration_yawn = self.yawn_detection.detect(open_mouth)
         if is_yawn:
             self.yawn_counter.increment(duration_yawn)
-
-        print(f'is yawn: {self.yawn_counter.yawn_count}')
 
         if elapsed_time >= 180:
             yawn_data = {
