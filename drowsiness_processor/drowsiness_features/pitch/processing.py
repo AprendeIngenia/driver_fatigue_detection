@@ -24,8 +24,6 @@ class PitchDetection(Detector):
         nose_point = head_distances['nose_point'][1]
         right_cheek_point = head_distances['right_cheek_point'][1]
         left_cheek_point = head_distances['left_cheek_point'][1]
-        print(f'nose point: {nose_point} right point: {right_cheek_point} left point: {left_cheek_point}')
-        print(f'nose_mouth: {nose_mouth_distance} nose_front: {nose_front_distance}')
 
         if right_cheek_point > nose_point > left_cheek_point and nose_mouth_distance < nose_front_distance:
             self.head_down = True
