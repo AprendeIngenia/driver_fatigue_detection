@@ -1,5 +1,6 @@
 import csv
 import os
+import json
 from datetime import datetime
 
 
@@ -58,3 +59,38 @@ class DrowsinessReports:
             with open(self.file_name, mode='a', newline='') as file:
                 writer = csv.DictWriter(file, fieldnames=self.fields)
                 writer.writerow(row)
+
+    def generate_json_report(self, report_data: dict) -> str:
+        report_json = {
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'eye_rub_first_hand': {
+                'report': report_data.get('eye_rub_first_hand', {}).get('eye_rub_report', False),
+                'count': report_data.get('eye_rub_first_hand', {}).get('eye_rub_count', 0),
+                'durations': report_data.get('eye_rub_first_hand', {}).get('eye_rub_durations', [])
+            },
+            'eye_rub_second_hand': {
+                'report': report_data.get('eye_rub_second_hand', {}).get('eye_rub_report', False),
+                'count': report_data.get('eye_rub_second_hand', {}).get('eye_rub_count', 0),
+                'durations': report_data.get('eye_rub_second_hand', {}).get('eye_rub_durations', [])
+            },
+            'flicker': {
+                'report': report_data.get('flicker_and_micro_sleep', {}).get('flicker_report', False),
+                'count': report_data.get('flicker_and_micro_sleep', {}).get('flicker_count', 0)
+            },
+            'micro_sleep': {
+                'report': report_data.get('flicker_and_micro_sleep', {}).get('micro_sleep_report', False),
+                'count': report_data.get('flicker_and_micro_sleep', {}).get('micro_sleep_count', 0),
+                'durations': report_data.get('flicker_and_micro_sleep', {}).get('micro_sleep_durations', [])
+            },
+            'pitch': {
+                'report': report_data.get('pitch', {}).get('pitch_report', False),
+                'count': report_data.get('pitch', {}).get('pitch_count', 0),
+                'durations': report_data.get('pitch', {}).get('pitch_durations', [])
+            },
+            'yawn': {
+                'report': report_data.get('yawn', {}).get('yawn_report', False),
+                'count': report_data.get('yawn', {}).get('yawn_count', 0),
+                'durations': report_data.get('yawn', {}).get('yawn_durations', [])
+            }
+        }
+        return json.dumps(report_json)
