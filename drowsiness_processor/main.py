@@ -1,4 +1,7 @@
 import numpy as np
+import base64
+import cv2
+
 from drowsiness_processor.extract_points.point_extractor import PointsExtractor
 from drowsiness_processor.data_processing.main import PointsProcessing
 from drowsiness_processor.drowsiness_features.processing import FeaturesDrowsinessProcessing
@@ -14,6 +17,13 @@ class DrowsinessDetectionSystem:
         self.visualizer = ReportVisualizer()
         self.reports = DrowsinessReports('drowsiness_processor/reports/august/drowsiness_report.csv')
         self.json_report: dict = {}
+
+    def run(self, picture_base64: str):
+        # decode base64
+        picture_bytes = base64.b64decode(picture_base64)
+        # convert bytes to OpenCV image
+        picture = cv2.imdecode(np.frombuffer(picture_bytes, np.uint8), cv2.IMREAD_COLOR)
+        return self.frame_processing(picture)
 
     def frame_processing(self, face_image: np.ndarray):
         key_points, control_process, sketch = self.points_extractor.process(face_image)
