@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 # install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -9,9 +9,11 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # requirements
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY app.py requirements.txt /app/
+COPY drowsiness_processor /app/drowsiness_processor
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # app port
 EXPOSE 8000

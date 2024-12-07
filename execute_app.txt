@@ -1,0 +1,5 @@
+# manual execute:
+uvicorn app:app --host 0.0.0.0 --port 8000
+
+# docker execute:
+docker run -d -p 8000:8000 --name drowsiness-server drowsiness-server
