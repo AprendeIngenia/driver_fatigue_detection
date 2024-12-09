@@ -21,7 +21,7 @@ Para utilizar este código, asegúrese de cumplir con los siguientes requisitos 
 - Sistema operativo compatible: Windows, Linux o macOS
 - Versión de Python: 3.10 o superior
 - Version CUDA: 11.7
-- Paquetes adicionales: NumPy, OpenCV, TensorFlo, etc. Consulte el archivo [requirements.txt](https://github.com/AprendeIngenia/driver_fatigue_detection/blob/012943fa6e02abbf65fde26573ce52e710f0a5a8/requirements.txt) para ver la lista completa de dependencias.
+- Paquetes adicionales: NumPy, OpenCV, Flet, etc. Consulte el archivo [requirements.txt](https://github.com/AprendeIngenia/driver_fatigue_detection/blob/012943fa6e02abbf65fde26573ce52e710f0a5a8/requirements.txt) para ver la lista completa de dependencias.
 - Docker (opcional para despliegue en contenedor)
 
 ## Instalación
