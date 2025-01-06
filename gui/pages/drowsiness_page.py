@@ -107,7 +107,7 @@ class Drowsiness:
 
     def run_detection(self):
         uri = "ws://localhost:8000/ws"
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
         try:
             asyncio.run(self.process_video(uri, cap))
         finally:
